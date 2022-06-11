@@ -61,7 +61,7 @@ const managerQuestions = ()=> {
 };
 
 //prompts for employees
-const addEmployee = ()=> {
+function addEmployee () {
     console.log(`
     ----------------------
     Let's add team members
@@ -130,7 +130,7 @@ function engineer () {
         
         employees.push(engineer);
         console.log(engineer);
-        addEmployee; 
+        addEmployee(); 
     })
 }
 
@@ -172,12 +172,12 @@ function intern () {
         
         employees.push(intern);
         console.log(intern);
-        addEmployee; 
+        addEmployee(); 
     })
 }
 
 managerQuestions()
-    .then (addEmployee)
+    .then (addEmployee())
     .catch(err => {
         console.log(err);
     });
