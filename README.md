@@ -56,7 +56,12 @@
 https://github.com/jleitz27/team-profile-generator 
 
   ## Link to video for project
-  https://www.screencast.com/t/InlkyvsZZO
+  https://www.screencast.com/t/kIeb1akYKnt
+
+  <p align="center">
+  <img src="./src/images/site.gif" width="350"
+
+</p>
   
 
 
