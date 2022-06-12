@@ -8,8 +8,7 @@ const renderTeamPage = function (teamCards) {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
                 <title>Team Profile</title>
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" 
-                integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
                 <link rel="stylesheet" href="style.css">
                 
             </head>
@@ -17,7 +16,7 @@ const renderTeamPage = function (teamCards) {
             <body>
                 <header>
                     <nav class="navbar" id="navbar">
-                        <span class="navbar-brand mb-0 h1 w-100 text-center">Team Profile</span>
+                        <span class="navbar-brand mb-0 h-25 w-100 text-center fs-1 bg-primary">My Team</span>
                     </nav>
                 </header>
                 <div class="container">
@@ -38,14 +37,14 @@ const renderManager = function (manager) {
     return `
     <div class="col-4 mt-4">
         <div class="card h-100">
-            <div class="card-header">
+            <div class="card-header bg-info border">
                 <h3>${manager.name}</h3>
-                <h4>Manager</h4>
+                <h4> ☕️ Manager</h4>
             </div>
-            <div class="card-body">
-                <p class="id">ID: ${manager.id}</p>
-                <p class="email">Email: <a href="mailto:${manager.email}">${manager.email}</a></p>
-                <p class="office">Office Number: ${manager.officeNumber}</p>
+            <div class="card-body bg-secondary">
+                <p class="id border p-1">ID: ${manager.id}</p>
+                <p class="email border p-1">Email: <a href="mailto:${manager.email}">${manager.email}</a></p>
+                <p class="office border p-1">Office Number: ${manager.officeNumber}</p>
             </div>
         </div>
     </div>
@@ -59,14 +58,14 @@ const renderEngineer = function (engineer) {
     return `
     <div class="col-4 mt-4">
     <div class="card h-100">
-        <div class="card-header">
+        <div class="card-header bg-info border">
             <h3>${engineer.name}</h3>
-            <h4>Engineer</h4>
+            <h4>💻 Engineer</h4>
         </div>
-        <div class="card-body">
-            <p class="id">ID: ${engineer.id}</p>
-            <p class="email">Email: <a href="mailto:${engineer.email}">${engineer.email}</a></p>
-            <p class="github">Github: <a href="https://github.com/${engineer.github}">${engineer.github}</a></p>
+        <div class="card-body bg-secondary">
+            <p class="id border p-1">ID: ${engineer.id}</p>
+            <p class="email border p-1">Email: <a href="mailto:${engineer.email}">${engineer.email}</a></p>
+            <p class="github border p-1">Github: <a href="https://github.com/${engineer.github}">${engineer.github}</a></p>
         </div>
     </div>
 </div>
@@ -78,14 +77,14 @@ const renderIntern = function (intern) {
     return `
     <div class="col-4 mt-4">
     <div class="card h-100">
-        <div class="card-header">
+        <div class="card-header bg-info border">
             <h3>${intern.name}</h3>
-            <h4>Intern</h4>
+            <h4>🎓 Intern</h4>
         </div>
-        <div class="card-body">
-            <p class="id">ID: ${intern.id}</p>
-            <p class="email">Email: <a href="mailto:${intern.email}">${intern.email}</a></p>
-            <p class="school">School: ${intern.school}</p>
+        <div class="card-body bg-secondary">
+            <p class="id border p-1">ID: ${intern.id}</p>
+            <p class="email border p-1">Email: <a href="mailto:${intern.email}">${intern.email}</a></p>
+            <p class="school border p-1">School: ${intern.school}</p>
         </div>
     </div>
 </div>
