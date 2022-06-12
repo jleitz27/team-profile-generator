@@ -8,13 +8,15 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
-const renderHTML = require('./src/generateHTML.js');
+
+
+const renderHTML = require('./src/renderHTML.js');
 console.log(renderHTML);
 
 //array for employees
 const employees = [];
 
-//prompts for manager
+ //prompts for manager
 
 const managerQuestions = ()=> {
     console.log(`
@@ -34,6 +36,7 @@ const managerQuestions = ()=> {
             type: 'input',
             name: 'id',
             message: "What is the Manager's ID?",
+            validate: (value) => value.match(/^\d*$/) ? true : 'Please enter a number'
         },
         {
             type: 'input',
@@ -52,7 +55,8 @@ const managerQuestions = ()=> {
         {
             type: 'input',
             name: 'officeNumber',
-            message: "What is the Manager's office number?"
+            message: "What is the Manager's office number?",
+            validate: (value) => value.match(/^\d*$/) ? true : 'Please enter a number'
         }
     ])
     .then(managerData => {
@@ -64,124 +68,96 @@ const managerQuestions = ()=> {
 };
 
 //prompts for employees
-function addEmployee () {
+const employeeQuestions = () => {
     console.log(`
-    ----------------------
+    
     Let's add team members
-    ----------------------
+    
     `);
 
-    return inquirer.prompt([
+    return inquirer.prompt ([
         {
             type: 'list',
-            name:'role',
-            message: 'What is the role of the employee?',
-            choices: ['Engineer', 'Intern']           
-
-        }
-    ])
-    .then(function(data){
-        if (data.role === "Engineer"){
-            engineer();
-        } else if (data.role === "Intern"){
-            intern();
-        } else (outputTeam());
-    });
-
-    
-
-    
-    
-};
-
-//team roles
-function engineer () {
-    return inquirer.prompt([
+            name: 'role',
+            message: "Please choose your employee's role",
+            choices: ['Engineer', 'Intern']
+        },
         {
             type: 'input',
-            name:'name',
-            message: 'What is the name of this team member?'           
-
+            name: 'name',
+            message: "What is the name of this team member?", 
         },
         {
             type: 'input',
             name: 'id',
-            message: "What is their ID?",
+            message: "Please enter the employee's ID.",
+            validate: (value) => value.match(/^\d*$/) ? true : 'Please enter a number'
         },
         {
             type: 'input',
             name: 'email',
-            message: `What is their email address?`,
-            validate: function (value) {
-                let pass = value.match(
-                    /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-                );
-                if (pass) {
+            message: "Please enter the employee's email.",
+            validate: email => {
+                valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+                if (valid) {
                     return true;
+                } else {
+                    console.log ('Please enter an email!')
+                    return false; 
                 }
-                return 'Please enter a valid email address!';
-            },
+            }
         },
         {
             type: 'input',
             name: 'github',
-            message: "What is their GitHub username?"
-        }
-    ])
-    .then(engineerData => {
-        const engineer = new Engineer(engineerData.name, engineerData.id, engineerData.email, engineerData.github);
-        
-        employees.push(engineer);
-        console.log(engineer);
-        addEmployee(); 
-    })
-}
-
-function intern () {
-    return inquirer.prompt([
-        {
-            type: 'input',
-            name:'name',
-            message: 'What is the name of this team member?'           
-
-        },
-        {
-            type: 'input',
-            name: 'id',
-            message: "What is their ID?",
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: `What is their email address?`,
-            validate: function (value) {
-                let pass = value.match(
-                    /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-                );
-                if (pass) {
-                    return true;
-                }
-                return 'Please enter a valid email address!';
-            },
+            message: "What is their GitHub username?",
+            when: (input) => input.role === "Engineer",
         },
         {
             type: 'input',
             name: 'school',
-            message: "What is this intern's school?"
+            message: "What is this intern's school?",
+            when: (input) => input.role === "Intern",
+        },
+        {
+            type: 'confirm',
+            name: 'confirmAddEmployee',
+            message: 'Would you like to add more members to this team?',
+            default: false
         }
     ])
-    .then(internData => {
-        const intern = new Intern(internData.name, internData.id, internData.email, internData.school);
-        
-        employees.push(intern);
-        console.log(intern);
-        addEmployee(); 
+    .then(employeeData => {
+        // data for employee types 
+
+        let { name, id, email, role, github, school, confirmAddEmployee } = employeeData; 
+        let employee; 
+
+        if (role === "Engineer") {
+            employee = new Engineer (name, id, email, github);
+
+            console.log(employee);
+
+        } else if (role === "Intern") {
+            employee = new Intern (name, id, email, school);
+
+            console.log(employee);
+        }
+
+        employees.push(employee); 
+
+        if (confirmAddEmployee) {
+            return employeeQuestions(employees); 
+        } else {
+            return employees;
+        }
     })
-}
+
+};
+
 
 //function to create the html page
-const writeToFile = data => {
-    fs.writeToFile('./dist/index.html', data, err => {
+const writeFile = data => {
+    fs.writeFile('./dist/index.html', data, err => {
         // if there is an error 
         if (err) {
             console.log(err);
@@ -194,13 +170,13 @@ const writeToFile = data => {
 }; 
 
 managerQuestions()
-    .then (addEmployee())
-    .then (employees =>{
+    .then(employeeQuestions)
+    .then(employees => {
         return renderHTML(employees);
     })
-    .then(pageHTML =>{
-        return writeToFile(pageHTML)
+    .then(pageHTML => {
+        return writeFile(pageHTML);
     })
     .catch(err => {
-        console.log(err);
+    console.log(err);
     });

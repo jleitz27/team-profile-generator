@@ -1,4 +1,4 @@
-//create whole team page
+// //create whole team page
 const renderTeamPage = function (teamCards) {   
     return`
     <!DOCTYPE html>
@@ -21,12 +21,12 @@ const renderTeamPage = function (teamCards) {
                     </nav>
                 </header>
                 <div class="container">
-                    <div class="row">
-                        <div class="team-area col-12 d-flex justify-content-center">
-                            {{ team }}
-                        </div>
+                    <div class="row justify-content-center" id="team-cards">
+                        <!--Team Cards-->
+                        ${teamCards}
                     </div>
                 </div>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
             </body>
         </html>
     `;
@@ -61,7 +61,7 @@ const renderEngineer = function (engineer) {
     <div class="card h-100">
         <div class="card-header">
             <h3>${engineer.name}</h3>
-            <h4>Engineer</h4><i class="material-icons">laptop_mac</i>
+            <h4>Engineer</h4>
         </div>
         <div class="card-body">
             <p class="id">ID: ${engineer.id}</p>
@@ -134,3 +134,4 @@ renderHTML = (data) => {
 
 //export
 module.exports = renderHTML;
+
