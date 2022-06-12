@@ -8,6 +8,9 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
+const renderHTML = require('./src/generateHTML.js');
+console.log(renderHTML);
+
 //array for employees
 const employees = [];
 
@@ -176,8 +179,28 @@ function intern () {
     })
 }
 
+//function to create the html page
+const writeToFile = data => {
+    fs.writeToFile('./dist/index.html', data, err => {
+        // if there is an error 
+        if (err) {
+            console.log(err);
+            return;
+        // when the profile has been created 
+        } else {
+            console.log("Your team profile has been created!")
+        }
+    })
+}; 
+
 managerQuestions()
     .then (addEmployee())
+    .then (employees =>{
+        return renderHTML(employees);
+    })
+    .then(pageHTML =>{
+        return writeToFile(pageHTML)
+    })
     .catch(err => {
         console.log(err);
     });
